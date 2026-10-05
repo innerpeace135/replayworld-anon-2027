@@ -1,0 +1,3 @@
+## Environment notes: SheetCopilot
+- In [stderr], the exception type and the last traceback line are deterministic.
+- In the [workbook] digest, the names and dimensions of the sheets that the script creates or changes are deterministic; a cell value is deterministic only when it can be computed from the script and the data that the history showed.

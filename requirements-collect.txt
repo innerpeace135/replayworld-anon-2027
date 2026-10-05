@@ -1,0 +1,6 @@
+-r requirements.txt
+httpx>=0.27
+browsergym-core>=0.13
+gymnasium>=0.29
+playwright>=1.44
+datasets>=2.19

@@ -1,0 +1,77 @@
+environment: webshop
+
+simulator:
+  model: Qwen/Qwen3.5-397B-A17B
+  api_base: localhost:8000/v1
+  api_key: EMPTY
+  temperature: 0.3
+  max_tokens: 4096
+  concurrency: 16
+
+embedding:
+  model: BAAI/bge-m3
+  device: cpu
+  batch_size: 16
+
+data:
+  replay_traces: data/samples/replay_traces.jsonl
+  arbitration_traces: data/samples/arbitration_traces.jsonl
+  output_dir: outputs/sample
+  test_traces: replaybench/webshop/test.jsonl
+
+repertoire:
+  initial: repertoires/webshop_initial
+  selected: repertoires/webshop
+  skill_body_cap: 5000
+
+clusters:
+  first_level: 4
+  leaves_per_node: 2
+  min_split_size: 6
+  seed: 42
+
+evolve:
+  n_pre: 24
+  n_sl: 16
+  batch_size: 8
+  n_step: 1
+  cycle_cap: 2
+  patience: 5
+  arbitration_sample: 8
+  frequency_threshold: 0.0
+  consolidation_period: 5
+  consolidation_overlap: 0.7
+  max_deletes_per_cycle: 2
+  replay_thinking: true
+  seed: 42
+
+harness:
+  capabilities: [coding]
+  replay_capabilities: []
+  reply_cap: 4
+  reply_cap_with_tool_group: 6
+  format_exemplar: harness_inputs/webshop/format_exemplar.md
+  shell_note: harness_inputs/shell_note.md
+  shell_timeout: 30
+  simulation_max_tokens: 8192
+
+agent:
+  model: Qwen/Qwen3.5-397B-A17B
+  api_base: localhost:8000/v1
+  api_key: EMPTY
+  concurrency: 16
+
+judge:
+  model: gpt-5.6-terra
+  api_base: ""
+  api_key: EMPTY
+  reasoning_effort: medium
+  max_tokens: 16384
+  concurrency: 8
+
+action_preserve_judge:
+  model: gpt-oss-120b
+  api_base: localhost:8001/v1
+  api_key: EMPTY
+  max_tokens: 8192
+  concurrency: 8

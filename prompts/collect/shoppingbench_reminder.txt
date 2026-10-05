@@ -1,0 +1,1 @@
+You MUST use a tool to proceed. Do NOT reply with text. Call recommend_product if you've found the best product, or find_product/view_product_information to continue searching. Your text responses are not accepted.

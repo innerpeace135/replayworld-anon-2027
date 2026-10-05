@@ -1,0 +1,59 @@
+You are analyzing a batch of {{n}} replay comparison results.
+
+Each comparison shows how a World Model's predicted observation differs from the REAL observation
+from an actual shopping environment. Each comparison also includes BEHAVIORAL evaluation
+(whether the predicted observation supports correct agent decision-making).
+
+## Individual Feedbacks
+
+{{discrepancies_text}}
+
+## CRITICAL RULES
+
+1. **COMPLETELY IGNORE FORMAT issues.** Do NOT mention JSON structure, delimiters, field names,
+   [SEP] formatting, HTML tags, or any structural/presentational differences.
+   Format is handled separately by the format reference.
+
+2. **Only report issues where the real observation HAS something the prediction LACKS (semantically).**
+
+3. **The real observation is ground truth.** Do NOT invent ideal standards.
+
+## Your Task
+
+From these {{n}} comparisons, extract common patterns in TWO categories:
+
+### A. BEHAVIORAL issues (trajectory logic, HIGHEST PRIORITY)
+These affect whether the WM-generated trajectory teaches the agent CORRECT shopping behavior:
+- Search results not relevant to query (products don't match keywords, wrong category/price range)
+- Page not correctly reflecting agent's action (clicked product but detail page shows different product)
+- Missing navigation concepts (no way to go back, no buy option, no pagination)
+- Product detail inconsistent with search results (different name/price on detail vs search page)
+- Options not properly presented (no size/color choices when query specifies them)
+
+### B. ATTRIBUTE issues (content quality, secondary priority)
+These affect the richness/realism of the observation:
+- Missing product information (descriptions, specifications)
+- Unrealistic prices (too high/low for the category)
+- Insufficient product variety (too few products in results)
+- Missing realistic details (ratings, reviews, shipping info)
+
+For each issue, report its frequency (fraction of comparisons). Only report issues appearing in 20%+ of comparisons.
+
+Return ONLY a JSON object (no markdown fences):
+{
+  "behavioral_issues": [
+    "specific behavioral issue with frequency (e.g., '45% of predictions show products irrelevant to query')"
+  ],
+  "attribute_issues": [
+    "specific attribute issue with frequency (e.g., '30% of predictions lack realistic price distribution')"
+  ],
+  "behavioral_suggestions": [
+    "actionable rule to fix a behavioral issue — each about ONE specific problem"
+  ],
+  "attribute_suggestions": [
+    "actionable rule to fix an attribute issue"
+  ],
+  "issue_frequencies": {
+    "specific_issue_name": 0.45
+  }
+}

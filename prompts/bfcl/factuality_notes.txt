@@ -1,0 +1,4 @@
+## Environment notes: BFCL
+- The returned value is deterministic: it follows from the call's arguments and from the state that earlier calls created.
+- Compare values by meaning: allow floating-point rounding, and ignore list order unless the order is part of the result.
+- When one step returns several elements, compare each element's value, including the text of an error message.

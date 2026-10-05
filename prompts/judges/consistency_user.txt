@@ -1,0 +1,13 @@
+## Task
+{{task}}
+
+## Interaction prefix (all earlier steps; observations are REAL)
+{{steps}}
+
+## Latest action (step t)
+{{action_t}}
+
+## REAL next observation for step t (ground truth). Use it ONLY to see which history content the environment kept, changed or removed; how closely the prediction's new values, wording or item lists match it is NOT scored here.
+{{gt}}{{gt_truncated_note}}
+## PREDICTED observation for step t (judge this)
+{{prediction}}

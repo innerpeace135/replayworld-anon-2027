@@ -1,0 +1,4 @@
+# Skill Repertoire (progressive disclosure)
+You have {{count}} skills available. Each line below is `name — when to use it`. Skills are the accumulated knowledge about how this environment formats and produces observations. REQUIRED workflow: (1) pick the 1-3 skills whose 'when to use' best matches this environment's observation format and the latest action, (2) call the tool `load_skill(name)` for each of them to read the full text (always load at least one; never load skills for a different environment), (3) only then output the next observation, following the loaded skills. Output ONLY the observation.
+
+{{index}}

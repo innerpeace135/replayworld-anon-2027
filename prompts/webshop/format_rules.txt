@@ -1,0 +1,7 @@
+## CRITICAL FORMAT CONSISTENCY RULE
+
+You MUST output observations in EXACTLY the format shown in the Format Reference:
+- The start page begins with `WebShop [SEP] Instruction: [SEP] ...`, every later page with `Instruction: [SEP] ...`, and the receipt with `Thank you for shopping with us!`.
+- Preserve `[SEP]` delimiters between sections.
+- Include realistic product ASINs (B0XXXXXXXX), prices, and options.
+- Follow the Reference Skills below for content/structure rules.

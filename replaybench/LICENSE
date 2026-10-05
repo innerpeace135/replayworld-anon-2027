@@ -1,0 +1,58 @@
+ReplayBench: license and attribution
+
+The traces in this folder are released under the Creative Commons
+Attribution-NonCommercial-ShareAlike 4.0 International license
+(https://creativecommons.org/licenses/by-nc-sa/4.0/), except
+sheetcopilot/test.jsonl, which keeps the GNU General Public License v3.0 of
+SheetCopilot (https://www.gnu.org/licenses/gpl-3.0.html; its upstream README
+restricts use to non-commercial purposes).
+
+Upstream sources and their licenses
+
+  webshop       WebShop (MIT)
+  mind2web      WebLINX (CC BY-NC-SA 4.0, with the terms of use below)
+  sheetcopilot  SheetCopilot (GPL-3.0)
+  os            AgentBench (Apache-2.0)
+  officebench   OfficeBench (Apache-2.0)
+  acebench      ACEBench (MIT)
+  bfcl          Berkeley Function Calling Leaderboard (Apache-2.0)
+  tau2bench     tau2-bench (MIT)
+
+Apache License 2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+MIT License
+
+Copyright (c) 2023 Princeton Natural Language Processing (WebShop)
+Copyright (c) Microsoft Corporation (ACEBench)
+Copyright (c) 2025 Sierra Research (tau2-bench)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+WebLINX terms of use (they travel with every derivative)
+
+- Restrictions: You agree not to use the Dataset in any way that is unlawful or
+  would infringe upon the rights of others.
+- Acknowledgment: By using the Dataset, you acknowledge that the Dataset may
+  contain data derived from third-party sources, and you agree to abide by any
+  additional terms and conditions that may apply to such third-party data.
+- Fair Use Declaration: The Dataset may be used for research if it constitutes
+  "fair use" under copyright laws within your jurisdiction. You are responsible
+  for ensuring your use complies with applicable laws.
+
+The data are provided as is, without warranty of any kind, for research use.

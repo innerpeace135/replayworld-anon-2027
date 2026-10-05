@@ -1,0 +1,60 @@
+You are auditing a simulated environment ("world model") for STATE-TRACKING CONSISTENCY.
+You will see (1) the task, (2) the full interaction prefix — every earlier action and the real
+observation that followed it, (3) the latest action, (4) the REAL next observation returned by the
+environment for that action (ground truth), and (5) the observation the simulator PREDICTED for it.
+
+Scope: judge only HISTORY CONTENT — the entities, values and states that appear in the task, in any
+earlier action or observation, or in the latest action — wherever the prediction shows them. The
+question is whether the prediction carries that content forward correctly under the latest action.
+
+Out of scope, judged separately:
+- The response type: whether the environment returned a result, an empty result or an error, whether
+  the page changed or stayed the same, and which page or turn type came next. A wrong response type is
+  not a violation here; the history content inside the prediction is still checked.
+- Content that the history does not contain (new values, records or text), and formatting.
+
+How to use the real observation: it shows which history content the environment kept at this step,
+which it changed and to what, and which it removed. Never penalize a prediction for agreeing with the
+real observation. If the real observation clearly contradicts the history, say so in the note and rely
+on the history.
+
+Check exactly these three items and quote evidence (a fragment of the history, the real observation or
+the prediction) for every violation; absence of information is never evidence:
+1. Persistence: every history entity, value or status that the latest action does not touch (ids, names,
+   counts, balances, files, selected options, page position, open dialogs) keeps its value wherever the
+   prediction shows it. Persistence applies to the SAME entity: a different record, file, page or user
+   is not history content. Dropping counts only inside a part of the state that the prediction shows: a
+   cart shown without one of its items is a violation; an observation of another kind that shows no
+   cart is not.
+2. No stale values: a history value that the latest action changed (the real observation shows its new
+   value) must not appear with its old value, and dependent values (a total, a count, a status, a
+   cursor) must not stay at their old values while the prediction shows the change itself.
+3. No invented history: the prediction does not present events, entities or user requests as already
+   known when neither the history nor the real observation shows them.
+
+If the prediction shows no history content at all, there is nothing to check: score 5 unless it
+asserts invented history.
+
+Score 1-5:
+5 = every history element that the prediction shows is carried forward correctly, and nothing is
+    presented as known that the history does not contain.
+4 = one minor slip in a peripheral history element that neither the task nor the latest action refers to.
+3 = one task-relevant history element is dropped, altered or left stale while the others are right.
+2 = a task-critical history value is contradicted or left stale, or several history elements are
+    altered, dropped or stale.
+1 = the prediction contradicts the history as a whole (another user, account or task than the one the
+    history established), or asserts invented history as established fact.
+
+Three contrastive examples:
+(a) The history shows a balance of 100, and the latest action deposits 20; the real observation shows
+120. A prediction that still shows 100 scores 2 (a task-critical value left stale). A prediction that
+shows 125 scores 5 here: 125 is a new value, judged separately.
+(b) Earlier steps put two items in the cart, and the latest action adds a third; the real observation
+lists all three. A prediction that lists the new item but drops one of the earlier two scores 3.
+(c) The real observation is an error message for an unknown tool; the prediction is a product list
+whose ids, titles and prices match the products that the history showed. Score 5: the response type is
+judged separately, and the history content inside the prediction is carried forward correctly. The same
+list with other prices for those products would score 2 or 3.
+
+Output JSON only: {"consistency": <1-5>, "violations": [{"item": <1-3>, "evidence": "<= 80 chars quoting the history, the real observation or the prediction"}], "note": "<= 120 chars"}
+Keep the whole reply under 400 characters.

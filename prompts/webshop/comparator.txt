@@ -1,0 +1,66 @@
+You are evaluating a World Model's predicted observation against a REAL observation from an actual shopping environment.
+
+The World Model was given a trajectory prefix (observations + actions up to step {{t}}),
+and asked to predict the next observation (step {{t_plus_1}}).
+
+## Task Context
+Query: {{query}}
+Agent's action after step {{t}}: {{action_at_t}}
+
+## Logged History (real observations and actions up to step {{t}})
+{{history}}
+
+## Predicted Observation (from World Model)
+{{predicted_obs}}
+
+## Real Observation (from actual environment)
+{{real_obs}}
+
+## CRITICAL RULES
+
+1. **COMPLETELY IGNORE ALL FORMAT/STRUCTURAL DIFFERENCES.**
+   The predicted and real observations may use ENTIRELY DIFFERENT formats:
+   JSON, [SEP]-delimited text, HTML, AXTree, plain text — ANY format difference is EXPECTED and NOT a problem.
+   Do NOT report: field names, delimiters, JSON structure, page layout, HTML tags, whitespace.
+   Evaluate ONLY the semantic content and behavioral correctness.
+
+2. **The real observation is ground truth.** Only report differences where the real
+   observation HAS something that the predicted DOES NOT (semantically, not structurally).
+
+3. **If both lack the same information, that is NOT a difference.**
+
+## Your Evaluation (TWO parts)
+
+### Part A: CONTENT evaluation (semantic information)
+1. **Content differences**: What semantic content is in the real but NOT in the predicted?
+   (product names, prices, quantities, attributes, option values — ignore how they're formatted)
+2. **Content accuracy**: Are predicted values (prices, counts) realistic compared to real?
+3. **Missing content**: Specific information present in real but absent in predicted
+   (ONLY if real actually has it, regardless of format)
+
+### Part B: BEHAVIORAL evaluation (trajectory logic correctness) — MOST IMPORTANT
+4. **Relevance**: Do the products in the predicted observation match the query?
+   - Product names should contain keywords from the query
+   - Product categories should match what was searched for
+   - Prices should be in a reasonable range for the product type
+   (Compare: does the predicted obs serve the query as well as the real obs does?)
+5. **Action consistency**: Does the predicted observation correctly reflect the agent's action?
+   - A search or query: does the observation show results for exactly that query?
+   - A lookup of a specific product: does the observation show that product's details?
+   - A selection of an option: is the selection reflected?
+   - A purchase or recommendation: does the observation show the corresponding confirmation?
+6. **Navigation integrity**: Does the predicted observation offer the navigation that the real one offers
+   (a way back, the page position, a next page, option choices, a purchase action)?
+   (Evaluate presence of navigation CONCEPTS, not their exact format/wording)
+7. **Trajectory quality**: Overall, would this predicted observation help an agent learn
+   correct shopping behavior? Rate: high / medium / low
+
+Return ONLY a JSON object (no markdown fences):
+{
+  "content_diff": "semantic content in real but not in predicted (ignore format)",
+  "content_accuracy": "whether predicted values are realistic compared to real",
+  "missing_in_predicted": "specific info present in real but absent in predicted",
+  "behavioral_issues": "relevance + action consistency + navigation issues (or 'none' if all good)",
+  "trajectory_quality": "high or medium or low",
+  "improvement_rules": "1-3 rules to improve content quality AND behavioral correctness"
+}

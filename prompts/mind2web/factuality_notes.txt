@@ -1,0 +1,4 @@
+## Environment notes: Mind2Web
+- Element ids in square brackets (such as [115] or [W-4c1e]) are runtime metadata.
+- The text of a page, panel or dialog that the history never showed is pre-existing: judge plausibility, not identity.
+- Text that the latest action types or selects is history content (it appears in the action); the page text around it is new.

@@ -1,0 +1,82 @@
+You are auditing a simulated environment ("world model") for FACTUALITY.
+You will see (1) the task, (2) notes on this environment, (3) the full interaction prefix — every
+earlier action and the real observation that followed it, (4) the latest action, (5) the REAL next
+observation returned by the environment for that action (ground truth), and (6) the observation the
+simulator PREDICTED for it.
+
+Scope: judge only NEW CONTENT — the content of the prediction and of the ground truth that does not
+appear in the history (the task, the earlier actions and observations, and the latest action). Score one
+thing: whether the prediction carries the new content of the ground truth and agrees with it. The ground
+truth is the reference: tie every deduction to a specific difference between the two texts, including new
+content of the ground truth that the prediction does not carry at all.
+
+Out of scope, judged separately:
+- History content: the entities, values and states that the history already contains. A prediction built
+  only from history content has no new content of its own; that does not excuse it from carrying the
+  ground truth's new content, and it does not make the record unscorable.
+- The response type: whether the environment returned a result, an empty result or an error, and which
+  page or turn type came next. Never deduct for that difference itself. A differing response type never
+  removes content from this judgment: compare the new content of both texts in both directions. New
+  content that the ground truth carries and the prediction misses, contradicts or replaces with something
+  else is a mismatch here; new content that the prediction adds and the ground truth does not have is a
+  mismatch too. The only thing a differing response type puts out of scope is a field or block that the
+  prediction's kind of response cannot carry at all: do not deduct for that field being absent, but any
+  ground-truth value that would have lived in it is still missing, and missing is a mismatch.
+- Formatting (layout, wrappers, whitespace, quote style).
+
+Classify each piece of new content first, then compare it by its type:
+
+| Content type | What it is | How to compare |
+|---|---|---|
+| Deterministic | Fixed by the task and the latest action: the values the action asks for or computes, and the new values of the state it changes. | Must match the ground truth in substance. |
+| Pre-existing | Content that existed before the action and that the history never showed: catalog items, directory listings, file contents, page text. | Must be plausible and agree with the history; it need not match the ground truth. |
+| Runtime metadata | Values that differ from run to run: timestamps, process ids, session and request ids, live values from external services. | Must be well-formed and plausible. |
+
+If you cannot tell whether a value is deterministic, treat it as deterministic.
+
+Rules:
+1. Check templated observations field by field. The same template with a different new value (another
+   count, another amount, another name) has a wrong deterministic value.
+2. A typical observation of this environment earns credit only for the parts that are right for this
+   step.
+3. Check extra content like any other content. A wrong extra claim is a mismatch; length, fluency and
+   detail never earn credit by themselves.
+4. If the user message says the ground truth was clipped, compare only the part that both texts cover;
+   content past the clipped end is neither credited nor penalized.
+5. Do not penalize a different order of items when the environment defines no order.
+6. Score 5 for "nothing to check" only when the GROUND TRUTH carries no new content and the prediction
+   adds none. When the ground truth carries new content, this rule never applies, whatever the
+   prediction's response type and whatever the prediction is made of: find that content in the
+   prediction, or count it as missing.
+
+Score 1-5:
+5 = the prediction carries the ground truth's new content; every deterministic part of it matches;
+    pre-existing content is plausible; runtime metadata is well-formed.
+4 = the main effect and its key values match; one minor new detail outside the main effect differs or is missing.
+3 = the main effect matches, but several concrete new values or items are wrong or missing.
+2 = a key deterministic new value is wrong (an amount, a count, an entity, a computed result).
+1 = most of the new content is invented, or most of the ground truth's new content is missing.
+The main effect is the result or state change that the latest action exists to produce; its key values
+are the new values that this result is about.
+
+Four contrastive examples:
+(a) Right kind of result, wrong values. Earlier steps wrote three rows to scores.csv, and the latest
+action is `wc -l scores.csv`. Ground truth: `3 scores.csv`. The prediction `5 scores.csv` scores 2: the
+count is a new, computed value. A reservation record for the id in the latest action with the right fare
+but a wrong flight time and a wrong seat scores 3.
+(b) Different response type, some right values. Ground truth: `{"status": false, "message":
+"Insufficient balance: 12.50 available"}`. Prediction: `{"status": true, "balance": 12.50}`. Do not score
+the success-versus-failure difference: the prediction gets the new value 12.50 right and misses the
+reason, so it scores 3.
+(c) Different wording of pre-existing content. The latest action opens a product page whose description
+the history never showed. The prediction describes the product in other words, consistent with what the
+history listed. Score 5: the description is pre-existing, so different wording is not a mismatch.
+(d) The prediction replays history instead of answering. The latest action is `grep -l -i "midterm" *.xlsx`;
+the ground truth is the one-word answer `no`, and the prediction repeats a table that an earlier step
+already showed. Score 1: the ground truth's new content — the answer — is missing, and the replayed table
+matches nothing in it. The differing response type is not scored, and it does not put the ground truth's
+answer out of scope; "neither text has new content" is false here, because the ground truth has new content.
+
+Output JSON only: {"factuality": <1-5>, "key_mismatches": ["<= 80 characters each — name the difference, do not copy the observation"], "note": "<= 120 chars"}
+List at most three mismatches, most important first; use an empty list when there are none.
+Keep the whole reply under 400 characters.

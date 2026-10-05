@@ -1,0 +1,15 @@
+## Task
+{{task}}
+
+{{environment_notes}}
+
+## Interaction prefix (all earlier steps; observations are REAL)
+{{steps}}
+
+## Latest action (step t)
+{{action_t}}
+
+## REAL next observation for step t (ground truth). It is the reference for every comparison.
+{{gt}}{{gt_truncated_note}}
+## PREDICTED observation for step t (score its FACTUALITY)
+{{prediction}}

@@ -1,0 +1,78 @@
+You are auditing the OUTPUT FORMAT of a simulated environment ("world model"). You will see the task,
+the interaction prefix (earlier actions and REAL observations), the latest action, the REAL next
+observation (ground truth), and the observation the simulator PREDICTED for the latest action.
+Score ONLY formatting: whether the prediction is a well-formed environment observation of the same
+kind as the ground truth, that could be handed to an agent in place of the real one. Do NOT score
+whether the content is factually right — that is judged separately.
+
+Check, in this order:
+1. It is an observation, not something else: no agent-side text (thoughts, "Thought:", step
+   narration, <answer> blocks, code fences wrapping the whole output, meta-commentary, refusals),
+   no simulator tags such as <predicted_observation>, no explanation of what "would" happen.
+2. Same surface type as the ground truth: e.g. a WebShop page / results list / receipt; an
+   accessibility tree starting at the root web area (Mind2Web); a spreadsheet execution report with
+   its status header and stdout/stderr blocks (SheetCopilot); the OS output wrapper (OS);
+   a tool result or a [user] turn (tau2-bench); a Python-style return value or JSON (ACEBench, BFCL);
+   the office environment's plain-text response (OfficeBench). Simulated-user turns (lines starting
+   with [user] in tau2-bench and ACEBench) are legitimate observations of the environment, not
+   agent-side text; score them as observations of the 'user turn' kind. 'Surface type' means the
+   environment's family of observations, not which outcome the observation carries: an error object
+   and a result list are the SAME surface for an API-style environment (WebShop backends, ACEBench,
+   BFCL, tau2-bench tools); an error line and a success line are the same surface for OfficeBench; text
+   printed by a command and JSON printed by a command are both OS output.
+3. Structural conventions of that surface: envelope / header / field ordering / bracketing /
+   indentation / line breaks / separators as in the ground truth and the earlier observations in
+   the prefix; balanced brackets and quotes; no duplicated or truncated envelope.
+4. Single, final observation: not several alternative predictions, not the prefix replayed, not
+   trailing junk after the observation.
+
+Outcome-determined content is not format. Any block, field, line, page or message whose PRESENCE or
+CONTENT is decided by what happened at this step is outcome, and must not move the score up or down:
+SheetCopilot's [workbook] digest (it exists only when output_exists=True) and the text inside the
+[stdout] / [stderr] blocks; a purchase receipt versus a product page versus a results page in WebShop;
+an error message versus a result; an error object versus a list; an empty container versus a filled
+one; which tool's response schema was returned. Judge only whether the text is a well-formed
+observation of this environment's family, with the structural conventions that EVERY observation of
+the family carries whatever its outcome (the envelope, the header line, the bracketing and the
+separators). If a deduction you are about to make names the outcome, a value, or a block that exists
+only for one outcome, drop that deduction.
+
+Values and response type are not format either. The values an observation carries, how many items it
+lists, and which items, records, rows or files appear are content: a wrong value, an extra or missing
+entry, or a different list must not move the score. Which kind of response the environment gave (a tool
+result or a message from the simulated user; a results page, a product page or a receipt; a result, an
+empty result or an error) is the response type, judged separately: for check 2, any kind of observation
+that this environment produces is the right surface. A key or field that this environment never returns
+in that kind of observation is a structural defect, because it changes the schema, not the content.
+
+Do NOT penalize: a different outcome than the ground truth and the envelope that comes with it
+(success vs. error, empty vs. non-empty result, an error object where the ground truth is a list, an
+empty list where it has items, or the reverse); different values, ids, names, counts or items; a
+different set of fields when the prediction is a valid response of a different tool or page; single
+vs. double quotes; insignificant whitespace (trailing spaces, extra blank lines) that does not
+change how the observation parses.
+
+Two contrastive examples (SheetCopilot): (i) the ground truth reads `status=ok | output_exists=True`
+followed by [stdout], [stderr] and a [workbook] digest; the prediction reads
+`status=ok | output_exists=False` followed by an empty [stdout] block and an empty [stderr] block and
+no [workbook] digest — a wrong outcome carried by a well-formed report: Format 5. (ii) the prediction
+carries the ground truth's outcome, a [workbook] digest and the same blocks, but the report starts
+directly with [stdout] and has no `status=... | output_exists=...` header line — a right outcome in a
+report missing its envelope header: Format 3.
+
+A third contrastive example (tau2-bench): the ground truth is a [tool] JSON object with the keys
+reservation_id, status and flights, where flights lists two flights; the prediction is a [tool] JSON
+object with the same keys, nesting and bracketing but another reservation id, another status and three
+flights — wrong content in the right form: Format 5.
+
+Score 1-5:
+5 = a clean observation of the right kind with the ground truth's conventions; an agent could consume it as-is.
+4 = right kind and consumable; small cosmetic deviations (spacing, ordering of a minor field, one missing separator).
+3 = right kind but a structural convention is broken (wrong envelope/header, unbalanced structure, mixed
+    JSON/prose) — an agent would probably still parse the main content.
+2 = wrong kind of surface for this environment, or the observation is wrapped in / mixed with agent-side
+    text, or it contains several alternative predictions.
+1 = mostly not an observation (explanation, narration, refusal) with fragments of one.
+
+Output JSON only: {"format": <1-5>, "issues": ["<= 80 characters each — name the problem, do not copy the observation"], "note": "<= 120 chars"}
+Keep the whole reply under 300 characters.

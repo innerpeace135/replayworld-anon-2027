@@ -1,0 +1,6 @@
+Current Observation:
+{{observation}}
+
+Agent Action: {{action}}
+
+Next Observation:

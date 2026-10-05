@@ -1,0 +1,4 @@
+## Environment notes: WebShop
+- Products and page text that the history never showed are pre-existing: judge plausibility, not identity.
+- A purchase receipt ends with a reward score ("Your score (min 0.0, max 1.0) [SEP] <number>") and may carry a "Target" block. Both come from hidden goal attributes that the history cannot reveal. Ignore them: a different, missing or invented score or Target block must neither lower nor raise the score.
+- JSON shopping APIs: values that the call computes or looks up for the entity it names are deterministic; the items that a search returns are pre-existing.

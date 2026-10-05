@@ -1,0 +1,4 @@
+## Environment notes: ACEBench
+- Values that the latest call computes or creates (a new balance, an order id, a count) are deterministic; catalog content that was never shown is pre-existing.
+- The reason that a failure message gives is deterministic.
+- Lines that start with [user] are messages from the simulated user: its new requests and stated facts must match the ground truth; the wording need not.

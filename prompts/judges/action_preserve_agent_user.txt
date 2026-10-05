@@ -1,0 +1,10 @@
+# Task
+{{task}}
+
+# History
+{{history}}
+
+# Newest observation (result of action {{previous}})
+{{observation}}
+
+# Next action (one line, action syntax only):

@@ -1,0 +1,7 @@
+openai>=1.58
+numpy>=1.26
+scipy>=1.11
+scikit-learn>=1.4
+sentence-transformers>=3.0
+pyyaml>=6.0
+pytest>=8.0

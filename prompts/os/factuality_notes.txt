@@ -1,0 +1,5 @@
+## Environment notes: OS
+- Values that a command computes (a count, a sum, the size of a file created earlier in the session) are deterministic.
+- Contents of files and directories that the history never showed are pre-existing: judge plausibility, not identity.
+- The reason that an error message gives (for example "Permission denied" versus "No such file or directory") is deterministic.
+- Timestamps, process ids and the sizes of files that the history never showed are runtime metadata.

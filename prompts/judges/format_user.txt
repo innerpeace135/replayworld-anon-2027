@@ -1,0 +1,10 @@
+## Task
+{{task}}
+## Interaction prefix (earlier steps; observations are REAL)
+{{steps}}
+## Latest action
+{{action_t}}
+## REAL next observation (ground truth). Use it ONLY to recognise the surface type and the structural conventions of this environment. Its content, outcome, values, ids, item counts, field values, and any block that exists only for its outcome are IRRELEVANT here and are judged elsewhere.
+{{gt}}{{gt_truncated_note}}
+## PREDICTED observation (score its FORMAT only)
+{{prediction}}

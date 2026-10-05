@@ -1,0 +1,13 @@
+# Task query
+{{task}}
+
+# Trajectory prefix
+{{history}}
+
+# Candidate action A
+{{action_a}}
+
+# Candidate action B
+{{action_b}}
+
+Decide now. Return ONLY the JSON object.

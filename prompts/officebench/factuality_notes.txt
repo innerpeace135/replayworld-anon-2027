@@ -1,0 +1,4 @@
+## Environment notes: OfficeBench
+- An app-switch confirmation lists the actions available in that app; the list is deterministic.
+- Contents of files that existed before and that the history never showed are pre-existing: judge plausibility, not identity.
+- The reason that an environment message gives (for example that a file does not exist or already exists) is deterministic.

@@ -1,0 +1,4 @@
+## Environment notes: tau2-bench
+- In tool results, the new ids, statuses and amounts that the call determines are deterministic; timestamps are runtime metadata.
+- In user messages, the user's new requests, answers and stated facts (names, ids, dates) must match the ground truth; the wording need not.
+- A user message may contain the user's own tool calls and their [tool] results; check those results as tool results.
